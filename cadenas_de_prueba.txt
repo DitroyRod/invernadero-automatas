@@ -1,0 +1,37 @@
+# Cadenas de prueba — Sistema de Gestión de Invernadero
+# Formato: automata  cadena  resultado_esperado  # comentario
+# Para la cadena vacía (λ) se escribe: -
+#
+# ---------------- RIEGO (AFD) ----------------
+# Σ = { s: suelo seco, h: suelo húmedo, A: abrir válvula, C: cerrar válvula }
+riego  -            ACEPTA   # día sin eventos
+riego  h            ACEPTA   # el suelo estaba húmedo, no hizo falta regar
+riego  sh           ACEPTA   # se secó, pero se humedeció antes de regar
+riego  sAhC         ACEPTA   # riego normal
+riego  sAsshC       ACEPTA   # siguió seco un rato mientras regaba
+riego  sAsC         RECHAZA  # cerró con el suelo todavía seco
+riego  sACAhC       ACEPTA   # corte manual y se volvió a abrir
+riego  hsAhChsAhC   ACEPTA   # dos riegos en el mismo día
+riego  A            RECHAZA  # abrir sin suelo seco
+riego  hA           RECHAZA  # abrir con el suelo húmedo
+riego  C            RECHAZA  # cerrar una válvula cerrada
+riego  s            RECHAZA  # quedó seco sin regar
+riego  sA           RECHAZA  # quedó la válvula abierta
+riego  sAh          RECHAZA  # se humedeció pero nunca cerró
+riego  sAAhC        RECHAZA  # abrir una válvula ya abierta
+riego  sAhCC        RECHAZA  # cerrar dos veces
+#
+# ---------------- BANDEJAS (AP) ----------------
+# Σ = { t: sembrar tomate, p: sembrar pimiento, T: trasplantar tomate, P: trasplantar pimiento }
+bandejas  -         ACEPTA   # invernadero vacío
+bandejas  tT        ACEPTA   # una bandeja de tomate
+bandejas  tpPT      ACEPTA   # la de arriba (pimiento) sale primero
+bandejas  tTpP      ACEPTA   # trasplantes intercalados
+bandejas  ttpPTT    ACEPTA   # pila de tres bandejas
+bandejas  tpPpPT    ACEPTA   # se reutiliza el lugar de arriba
+bandejas  T         RECHAZA  # trasplantar sin bandejas
+bandejas  tpTP      RECHAZA  # el tomate está abajo del pimiento
+bandejas  tP        RECHAZA  # arriba hay tomate, no pimiento
+bandejas  ttT       RECHAZA  # quedó una bandeja
+bandejas  tTT       RECHAZA  # se trasplantó más de lo sembrado
+bandejas  p         RECHAZA  # nunca se trasplantó
